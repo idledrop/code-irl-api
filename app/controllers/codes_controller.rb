@@ -4,6 +4,7 @@ class CodesController < ApplicationController
   # GET /codes
   def index
     if params[:tags].present?
+
       tags = params[:tags].split(',')
       @codetags = CodeTag.where(:tag_id => tags)
       codes = @codetags.map do |codetag|
@@ -12,8 +13,11 @@ class CodesController < ApplicationController
       @codes = Code.where(:id => codes)
     elsif params[:tag_id].present?
       @codes = Tag.find(params[:tag_id]).codes
+
+    else
+      @codes = Code.all
     end
-    @codes = Code.all
+
 
     render json: @codes
   end
