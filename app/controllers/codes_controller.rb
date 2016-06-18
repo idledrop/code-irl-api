@@ -26,7 +26,8 @@ class CodesController < ApplicationController
   # POST /codes
   def create
     @code = Code.new(code_params)
-
+    @code.up = 0
+    @code.down = 0
     if @code.save
       render json: @code, status: :created, location: @code
     else
@@ -36,6 +37,13 @@ class CodesController < ApplicationController
 
   # PATCH/PUT /codes/1
   def update
+    if code_params[:up].present?
+      @code.up +=1
+      @code.save
+    elsif code_params[:down].present?
+      @code.down +=1
+      @code.save
+    end
     if @code.update(code_params)
       render json: @code
     else

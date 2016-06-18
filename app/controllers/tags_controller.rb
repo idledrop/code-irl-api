@@ -6,7 +6,7 @@ class TagsController < ApplicationController
     if params[:code_id].present?
       @tags = Code.find_by_id(params[:code_id]).tags
     elsif params[:search].present?
-      @tags = Tag.where("name LIKE ?", "%#{params[:search]}%")
+      @tags = Tag.where("lower(name) LIKE ?", "%#{params[:search].downcase}%")
     else
       @tags = Tag.all
     end
@@ -23,11 +23,12 @@ class TagsController < ApplicationController
     if params[:code_id]
       #calling it from codes
       #Were adding tags to the code.
-      @code = Codes.find(params[:code_id])
+      @code = Code.find(params[:code_id])
       tag_ids = params["tag_ids"]
       tag_ids.each do |tag_id|
-        @code.tags << Tags.find(tag_id)
+        @code.tags << Tag.find_by_id(tag_id)
       end
+      @code.save
         render json: @code.tags, status: :created, location: @tag
     else
       @tag = Tag.new(tag_params)
