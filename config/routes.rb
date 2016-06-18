@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
-  resources :codes
+  resources :codes do
+    resources :tags
+  end
   resources :tags
   resources :users
   resources :focuses

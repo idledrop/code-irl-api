@@ -20,15 +20,23 @@ class TagsController < ApplicationController
   def create
     if params[:code_id]
       #calling it from codes
+      #Were adding tags to the code.
       @code = Codes.find(params[:code_id])
-    end
-    @tag = Tag.new(tag_params)
-    @tag.types = 'tag'
-    if @tag.save
-      render json: @tag, status: :created, location: @tag
+      tag_ids = params["tag_ids"]
+      tag_ids.each do |tag_id|
+        @code.tags << Tags.find(tag_id)
+      end
+        render json: @code.tags, status: :created, location: @tag
     else
-      render json: @tag.errors, status: :unprocessable_entity
+      @tag = Tag.new(tag_params)
+      @tag.types = 'tag'
+      if @tag.save
+        render json: @tag, status: :created, location: @tag
+      else
+        render json: @tag.errors, status: :unprocessable_entity
+      end
     end
+
   end
 
   # PATCH/PUT /tags/1
@@ -42,6 +50,10 @@ class TagsController < ApplicationController
 
   # DELETE /tags/1
   def destroy
+    if params[:code_id].present?
+      # /codes/:codeid/tags/1
+      @tag = CodeTag.where({code_id: params[:code_id], tag_id: params[:id]})
+    end
     @tag.destroy
   end
 
