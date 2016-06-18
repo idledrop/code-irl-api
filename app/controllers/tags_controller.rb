@@ -3,7 +3,9 @@ class TagsController < ApplicationController
 
   # GET /tags
   def index
-    if params[:search].present?
+    if params[:code_id].present?
+      @tags = Code.find_by_id(params[:code_id]).tags
+    elsif params[:search].present?
       @tags = Tag.where("name LIKE ?", "%#{params[:search]}%")
     else
       @tags = Tag.all
