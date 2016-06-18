@@ -2,9 +2,13 @@ class UsersController < ApplicationController
   before_action :set_user, only: [:show, :update, :destroy]
 
   # GET /users
+  # GET /users/?email=email_address
   def index
-    @users = User.all
-
+    if params[:email].present?
+      @users = User.find_by_email(params[:email])
+    else
+      @users = User.all
+    end
     render json: @users
   end
 

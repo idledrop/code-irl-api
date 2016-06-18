@@ -3,9 +3,12 @@ class TagsController < ApplicationController
 
   # GET /tags
   def index
-    @tags = Tag.all
-
-    render json: @tags
+    if params[:search].present?
+      @tags = Tag.where("name LIKE ?", "%#{params[:search]}%")
+    else
+      @tags = Tag.all
+    end
+    render json: @tags.limit(10)
   end
 
   # GET /tags/1
@@ -15,8 +18,12 @@ class TagsController < ApplicationController
 
   # POST /tags
   def create
+    if params[:code_id]
+      #calling it from codes
+      @code = Codes.find(params[:code_id])
+    end
     @tag = Tag.new(tag_params)
-
+    @tag.types = 'tag'
     if @tag.save
       render json: @tag, status: :created, location: @tag
     else
