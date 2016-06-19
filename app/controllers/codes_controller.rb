@@ -48,11 +48,9 @@ class CodesController < ApplicationController
       @code.down +=1
       @code.save
     end
-    if @code.update(code_params)
+
       render json: @code
-    else
-      render json: @code.errors, status: :unprocessable_entity
-    end
+
   end
 
   # DELETE /codes/1
