@@ -10,15 +10,13 @@ class CodesController < ApplicationController
       codes = @codetags.map do |codetag|
         codetag.code_id
       end
-      @codes = Code.where(:id => codes)
+      @codes = Code.select('*, up-down AS score').where(:id => codes).order('score DESC')
     elsif params[:tag_id].present?
       @codes = Tag.find(params[:tag_id]).codes
-
     else
       @codes = Code.all
     end
-
-
+    binding.pry
     render json: @codes
   end
 
