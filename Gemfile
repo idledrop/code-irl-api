@@ -41,3 +41,5 @@ gem 'rails_12factor', group: :production
 gem 'rack-cors'
 
 gem 'github_api'
+
+gem 'active_model_serializers'

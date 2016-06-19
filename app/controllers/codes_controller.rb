@@ -16,7 +16,10 @@ class CodesController < ApplicationController
     else
       @codes = Code.all
     end
-    render json: @codes
+    render json: @codes.as_json(
+        only: [:id, :url, :up, :down, :created_at],
+        include: { tags: { only: [:id, :name] } }
+    )
   end
 
   # GET /codes/1
