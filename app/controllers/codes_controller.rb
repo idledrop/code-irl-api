@@ -69,3 +69,11 @@ class CodesController < ApplicationController
       params.require(:code).permit(:url, :up, :down)
     end
 end
+
+
+
+(1..100).each do |n|
+  puts "Fizz" if n%3 == 0
+  puts "Buzz" if n%5 == 0
+  puts n.to_s if a.empty?
+end
