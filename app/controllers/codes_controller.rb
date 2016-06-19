@@ -12,9 +12,9 @@ class CodesController < ApplicationController
       end
       @codes = Code.select('*, up-down AS score').where(:id => codes).order('score DESC')
     elsif params[:tag_id].present?
-      @codes = Tag.find(params[:tag_id]).codes
+      @codes = Tag.find(params[:tag_id]).codes.select('*, up-down AS score').order('score DESC').limit(20)
     else
-      @codes = Code.all.limit(20)
+      @codes = Code.select('*, up-down AS score').order('score DESC').limit(20)
     end
     render json: @codes.as_json(
         only: [:id, :url, :up, :down, :created_at],
