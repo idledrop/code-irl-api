@@ -16,7 +16,6 @@ class CodesController < ApplicationController
     else
       @codes = Code.all
     end
-    binding.pry
     render json: @codes
   end
 
