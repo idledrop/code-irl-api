@@ -3,7 +3,7 @@ class CodesController < ApplicationController
 
   # GET /codes
   def index
-    if params[:tags].present?
+    if params[:tags].present? && !params[:tags].empty?
 
       tags = params[:tags].split(',')
       @codetags = CodeTag.where(:tag_id => tags)
@@ -14,7 +14,7 @@ class CodesController < ApplicationController
     elsif params[:tag_id].present?
       @codes = Tag.find(params[:tag_id]).codes
     else
-      @codes = Code.all
+      @codes = Code.all.limit(20)
     end
     render json: @codes.as_json(
         only: [:id, :url, :up, :down, :created_at],
