@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160618190728) do
+ActiveRecord::Schema.define(version: 20160619071815) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -33,6 +33,21 @@ ActiveRecord::Schema.define(version: 20160618190728) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "emails", force: :cascade do |t|
+    t.string   "email"
+    t.integer  "hangout_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["hangout_id"], name: "index_emails_on_hangout_id", using: :btree
+  end
+
+  create_table "hangouts", force: :cascade do |t|
+    t.integer  "code_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["code_id"], name: "index_hangouts_on_code_id", using: :btree
+  end
+
   create_table "tags", force: :cascade do |t|
     t.string   "name"
     t.string   "types"
@@ -52,4 +67,6 @@ ActiveRecord::Schema.define(version: 20160618190728) do
 
   add_foreign_key "code_tags", "codes"
   add_foreign_key "code_tags", "tags"
+  add_foreign_key "emails", "hangouts"
+  add_foreign_key "hangouts", "codes"
 end
