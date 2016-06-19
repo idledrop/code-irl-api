@@ -1,9 +1,11 @@
 Rails.application.routes.draw do
+
   resources :hangouts do
     resources :emails
   end
   resources :codes do
     resources :tags
+    resources :comments
   end
   resources :tags
   resources :users
